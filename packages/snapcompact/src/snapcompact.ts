@@ -344,9 +344,11 @@ export interface IdealShape {
 const MODEL_VARIANTS: readonly (readonly [RegExp, IdealShape])[] = [
 	// Opus 4.7+ and Fable/Mythos read high-res natively (2576px edge under a
 	// 4,784 visual-token cap → 1932px square sweet spot): same recall and
-	// cost as 1568, a third fewer frames.
+	// cost as 1568, a third fewer frames. The cap is a family-wide Anthropic
+	// billing property, so every Opus line from 4.7 up (5.x and later
+	// included) belongs on this tier.
 	[/claude.*(fable|mythos)/i, { variant: "11on16-bw", frameSize: 1932 }],
-	[/claude-?opus-?4[.-][7-9]/i, { variant: "11on16-bw", frameSize: 1932 }],
+	[/claude-?opus-?(4[.-][7-9]|[5-9])/i, { variant: "11on16-bw", frameSize: 1932 }],
 	// Older Claude lines downscale past 1568px — keep the safe size.
 	[/claude/i, { variant: "11on16-bw" }],
 	// Gemini 3.x bills a fixed 1,120-token budget per image regardless of
